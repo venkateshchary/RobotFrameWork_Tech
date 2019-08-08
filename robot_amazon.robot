@@ -1,20 +1,40 @@
 *** Settings ***
-Documentation   A  simple amazon .com test suite
-Library  Selenium2Library
+Documentation     Simple example using SeleniumLibrary.
+Library           Selenium2Library
+Library    OperatingSystem
+
 
 *** Variables ***
+${LOGIN URL}      https://www.amazon.in/
+${BROWSER}        Chrome
+${text}     xpath=//*[@id="twotabsearchtextbox"]
+${search_button}    nav-input
+*** Test Cases ***
+Valid Login
+    Open Browser To Load Amazon
+    Practical Tutorial Data Reading
 
-${Browser}  =  Google Chrome
-${START_URL}  =  https://www.amazon.com
 
-*** Test Case ***
+*** Keywords ***
 
-Simple Web Opening Test
-    [Documentation]  A simple amazon site opening
-    [Tags]  Smoke
-    Open Browser  ${START_URL}  ${Browser}
-    wait Until  Page Contains  Shop by
-    Input Text  css=#twotabsearchtextbox  Ferrari 458
-    Click Button  css=#nav-search > form >div.nav-right > div > input
-    wait Until Page Contains  result for
+Open Browser To Load Amazon
+    Open Browser    ${LOGIN URL}    ${BROWSER}
+    # you can check the Title of the web page opened by below
+    Title Should Be      Online Shopping site in India: Shop Online for Mobiles, Books, Watches, Shoes and More - Amazon.in
+
+Practical Tutorial Data Reading
+    input text      ${text}  Test Definition
+    Click Element   class:${search_button}
+    sleep     5s
     Close Browser
+
+
+Input Password
+    [Arguments]    ${password}
+    Input Text    pass    ${password}
+
+Submit Credentials
+    Click Button    login
+
+Welcome Page Should Be Open
+    Title Should Be    Webmail Login
