@@ -9,10 +9,12 @@ ${LOGIN URL}      https://www.amazon.in/
 ${BROWSER}        Chrome
 ${text}     xpath=//*[@id="twotabsearchtextbox"]
 ${search_button}    nav-input
+${all_book_names}   //a[@class =a-link-normal.a-text-normal']//span[@class='a-size-medium.a-color-base a-text-normal']
 *** Test Cases ***
 Valid Login
     Open Browser To Load Amazon
     Practical Tutorial Data Reading
+    Book finding
 
 
 *** Keywords ***
@@ -26,8 +28,14 @@ Practical Tutorial Data Reading
     input text      ${text}  Test Definition
     Click Element   class:${search_button}
     sleep     5s
-    Close Browser
+    # Close Browser
 
+Book finding
+    ${count}=    Get Element Count    ${all_book_names}
+    Log    Num value is ${count}
+    : FOR    ${INDEX}    IN RANGE    1    2
+    \    ${name}=    Get Text    xpath=${all_book_names}
+    \    Log    text is ${name}
 
 Input Password
     [Arguments]    ${password}
